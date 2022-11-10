@@ -47,15 +47,15 @@ export function DetailsCard({ item, onCollapse, contentType }: IDetailsCard) {
 
     /* @ts-ignore - Just a temporal thing */
     const itemOverview = useMemo(() => trimStringToLength({ text: item.overview || "", maxLength: 480 }), [item])
-    const posterURL = useMemo(() => `url("${getImageFullPath(item.poster_path)}")`, [item])
-    const backdropURL = useMemo(() => `url("${getImageFullPath(item.backdrop_path)}")`, [item])
+    const posterURL = useMemo(() => `url("${getImageFullPath(item.poster_path, item.backdrop_path)}")`, [item])
+    const backdropURL = useMemo(() => `url("${getImageFullPath(item.backdrop_path, item.poster_path)}")`, [item])
 
     const [backColor, setBackColor] = useState("rgba( 255, 255, 255, 0.90)")
     const [isDark, setIsDark] = useState(false)
 
     useEffect(() => {
         const _getImageColor = async () => {
-            const c = await fac.getColorAsync(getURLWithoutCORS(getImageFullPath(item.backdrop_path)))
+            const c = await fac.getColorAsync(getURLWithoutCORS(getImageFullPath(item.backdrop_path, item.poster_path)))
 
             let rgbaColor = rgbStringToStruct(c.rgba)
             const baseColor = rgbStringToStruct("rgba( 255, 255, 255, 0.90)")

@@ -14,7 +14,7 @@ export function SimilarCard({ item, isDark }: ISimilarCard) {
 
     /* @ts-ignore - Just a temporal thing */
     const itemTitle = useMemo(()=> trimStringToLength({text: item.title || item.name || "", maxLength: 12}), [item])
-    const posterURL = useMemo(() => `url("${getImageFullPath(item.poster_path)}")`, [item])
+    const posterURL = useMemo(() => `url("${getImageFullPath(item.poster_path, item.backdrop_path)}")`, [item])
 
     return (
         <MotionBox role="group" w={"125px"} h={"280px"} display="flex" flexDir="column"
