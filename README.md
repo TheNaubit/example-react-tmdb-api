@@ -12,7 +12,7 @@ You can check this project deployed here: [https://wonderapi.nauverse.com/](http
 - React Router v6
 - Chakra UI
 - Framer Motion
-- React Query
+- React Query (with infinite pagination!)
 - And much more! 🚀
 
 ## How to install and run by yourself?
