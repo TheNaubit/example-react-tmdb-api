@@ -1,0 +1,36 @@
+{
+  "name": "wonder-film",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.0.11",
+    "@chakra-ui/react": "^2.3.7",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@loadable/component": "^5.15.2",
+    "@tanstack/react-query": "^4.14.5",
+    "axios": "^1.1.3",
+    "fast-average-color": "^9.1.1",
+    "framer-motion": "^7.6.5",
+    "react": "^18.2.0",
+    "react-content-loader": "^6.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.3",
+    "urlcat": "^2.0.4",
+    "vite-tsconfig-paths": "^3.5.2"
+  },
+  "devDependencies": {
+    "@types/loadable__component": "^5.13.4",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
+    "@vitejs/plugin-react": "^2.2.0",
+    "typescript": "^4.8.4",
+    "vite": "^3.2.3"
+  }
+}
