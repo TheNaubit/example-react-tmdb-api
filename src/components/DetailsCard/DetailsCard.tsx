@@ -185,8 +185,8 @@ export function DetailsCard({ item, onCollapse, contentType }: IDetailsCard) {
                                     )
                                 }
                                 {
-                                    (dataSimilarContent || []).slice(0, 2).map((similarItem, index) => {
-                                        return <SimilarCard isDark={isDark} item={similarItem} />
+                                    (dataSimilarContent || []).slice(0, 2).map((similarItem) => {
+                                        return <SimilarCard key={`similar-${similarItem.id}`} isDark={isDark} item={similarItem} />
                                     })
                                 }
                             </Flex>

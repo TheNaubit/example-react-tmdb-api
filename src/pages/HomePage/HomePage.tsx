@@ -1,6 +1,6 @@
 import { getTopMovies, getTopTVPrograms } from "@api";
 import { Box, Button, Heading, useToast, Flex, IconButton } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { ContentType, IMovie, ITabItem, ITVProgram, LoaderState, Direction } from "@types";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence } from "framer-motion"
@@ -37,8 +37,18 @@ export function HomePage() {
 
     const { changeLoaderState } = useLoader()
 
-    const { isFetching: isFetchingTopFilms, isLoading: isLoadingTopFilms, data: dataTopFilms, error: errorTopFilms } = useQuery({ queryKey: ["top-films"], queryFn: getTopMovies })
-    const { isFetching: isFetchingTopTVPrograms, isLoading: isLoadingTopTVPrograms, data: dataTopTVPrograms, error: errorTopTVPrograms } = useQuery({ queryKey: ["top-tv-programs"], queryFn: getTopTVPrograms })
+    const { fetchNextPage: fetchNextPageTopFilms, hasNextPage: hasNextPageTopFilms, isFetching: isFetchingTopFilms, isLoading: isLoadingTopFilms, data: dataTopFilms, error: errorTopFilms } =
+        useInfiniteQuery({
+            queryKey: ["top-films"], queryFn: getTopMovies,
+            getNextPageParam: (lastPage) => lastPage.page + 1
+        })
+
+
+    const { fetchNextPage: fetchNextPageTopTVPrograms, hasNextPage: hasNextPageTopTVPrograms, isFetching: isFetchingTopTVPrograms, isLoading: isLoadingTopTVPrograms, data: dataTopTVPrograms, error: errorTopTVPrograms } =
+        useInfiniteQuery({
+            queryKey: ["top-tv-programs"], queryFn: getTopTVPrograms,
+            getNextPageParam: (lastPage) => lastPage.page + 1
+        })
 
     const [selectedItem, setSelectedItem] = useState<IMovie | ITVProgram | null>(null)
     const [firstRenderedItemIndex, setFirstRenderedItemIndex] = useState(0)
@@ -58,16 +68,32 @@ export function HomePage() {
         setFirstRenderedItemIndex(0)
     }
 
-    const currentContentList = useMemo(() => currentSelectedContent === ContentType.Movie ? dataTopFilms : dataTopTVPrograms, [currentSelectedContent, dataTopFilms, dataTopTVPrograms])
+    const currentContentList = useMemo(() => {
+        const _data = currentSelectedContent === ContentType.Movie ? dataTopFilms : dataTopTVPrograms
+
+        const _items: Array<IMovie | ITVProgram> = [];
+
+        (_data?.pages || []).map((group, i) => {
+            group.results.map((item: IMovie | ITVProgram) => _items.push(item))
+        })
+
+        return _items;
+
+    }, [currentSelectedContent, dataTopFilms, dataTopTVPrograms])
     const isLoadingCurrentContentList = useMemo(() => currentSelectedContent === ContentType.Movie ? isLoadingTopFilms || isFetchingTopFilms : isLoadingTopTVPrograms || isFetchingTopTVPrograms, [isLoadingTopFilms, isLoadingTopTVPrograms, isFetchingTopFilms, isFetchingTopTVPrograms])
     const headerText = useMemo(() => `Which are the top ${currentSelectedContent === ContentType.Movie ? "movies" : "TV series"}?`, [currentSelectedContent])
-    const particleItems = useMemo(() => <Box pos="fixed" w="100vw" h="100vh" zIndex={0}>{new Array(15).fill(0).map(() => <ParticleItem />)}</Box>, [])
+    const particleItems = useMemo(() => <Box pos="fixed" w="100vw" h="100vh" zIndex={0}>{new Array(15).fill(0).map((_, i) => <ParticleItem key={`particle-${i}`} />)}</Box>, [])
 
     function _onMoveList(direction: Direction) {
         if (direction === Direction.Forward && firstRenderedItemIndex + 2 + 1 > (currentContentList || []).length - 1) return;
         if (direction === Direction.Backward && firstRenderedItemIndex - 1 < 0) return;
 
         setFirstRenderedItemIndex(direction === Direction.Forward ? firstRenderedItemIndex + 1 : firstRenderedItemIndex - 1)
+
+        if (firstRenderedItemIndex + 2 + 5 > (currentContentList || []).length - 1) {
+            if (currentSelectedContent === ContentType.Movie) fetchNextPageTopFilms()
+            else fetchNextPageTopTVPrograms()
+        }
     }
 
     useEffect(() => {
