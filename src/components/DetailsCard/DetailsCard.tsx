@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import loadable from "@loadable/component"
 import { trimStringToLength } from "@utils/stringUtils";
-import { getImageFullPath } from "@utils/apiUtils";
+import { getImageFullPath, getURLWithoutCORS } from "@utils/apiUtils";
 import { FastAverageColor } from "fast-average-color";
 import { mergeColors, rgbStringToStruct, rgbStructToString } from "@utils/colorUtils";
 
@@ -55,7 +55,7 @@ export function DetailsCard({ item, onCollapse, contentType }: IDetailsCard) {
 
     useEffect(() => {
         const _getImageColor = async () => {
-            const c = await fac.getColorAsync(getImageFullPath(item.backdrop_path))
+            const c = await fac.getColorAsync(getURLWithoutCORS(getImageFullPath(item.backdrop_path)))
 
             let rgbaColor = rgbStringToStruct(c.rgba)
             const baseColor = rgbStringToStruct("rgba( 255, 255, 255, 0.90)")
