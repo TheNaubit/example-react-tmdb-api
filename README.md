@@ -1,6 +1,8 @@
 # 🎉 Wonder Film!
 A little example / portfolio using React.js, Typescript, React Query, Chakra... to display in a beautiful way the top movies and series from the TMDB API.
 
+![](https://github.com/NauCode/example-react-tmdb-api/blob/c4a5276c439569f643449c73c3a9f56d75cbc12c/demo-page.png?raw=true)
+
 ## Live Demo
 You can check this project deployed here: [https://wonderapi.nauverse.com/](https://wonderapi.nauverse.com/)
 
