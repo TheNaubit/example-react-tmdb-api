@@ -12,6 +12,7 @@ import { trimStringToLength } from "@utils/stringUtils";
 import { getImageFullPath, getURLWithoutCORS } from "@utils/apiUtils";
 import { FastAverageColor } from "fast-average-color";
 import { mergeColors, rgbStringToStruct, rgbStructToString } from "@utils/colorUtils";
+import { BASE_COLOR_DETAILS_CARD } from "@constants";
 
 const SimilarCard = loadable(() => import("@components/SimilarCard"), {
     resolveComponent: (components) => components.SimilarCard,
@@ -50,7 +51,7 @@ export function DetailsCard({ item, onCollapse, contentType }: IDetailsCard) {
     const posterURL = useMemo(() => `url("${getImageFullPath(item.poster_path, item.backdrop_path)}")`, [item])
     const backdropURL = useMemo(() => `url("${getImageFullPath(item.backdrop_path, item.poster_path)}")`, [item])
 
-    const [backColor, setBackColor] = useState("rgba( 255, 255, 255, 0.90)")
+    const [backColor, setBackColor] = useState(BASE_COLOR_DETAILS_CARD)
     const [isDark, setIsDark] = useState(false)
 
     useEffect(() => {
@@ -58,7 +59,7 @@ export function DetailsCard({ item, onCollapse, contentType }: IDetailsCard) {
             const c = await fac.getColorAsync(getURLWithoutCORS(getImageFullPath(item.backdrop_path, item.poster_path)))
 
             let rgbaColor = rgbStringToStruct(c.rgba)
-            const baseColor = rgbStringToStruct("rgba( 255, 255, 255, 0.90)")
+            const baseColor = rgbStringToStruct(BASE_COLOR_DETAILS_CARD)
 
             rgbaColor.alpha = 0.3
 
