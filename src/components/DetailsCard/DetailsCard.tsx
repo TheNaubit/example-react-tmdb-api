@@ -61,8 +61,6 @@ export function DetailsCard({ item, onCollapse, contentType }: IDetailsCard) {
             let rgbaColor = rgbStringToStruct(c.rgba)
             const baseColor = rgbStringToStruct(BASE_COLOR_DETAILS_CARD)
 
-            rgbaColor.alpha = 0.3
-
             setIsDark(c.isDark)
             setBackColor(rgbStructToString(mergeColors(baseColor, rgbaColor, { mergeRed: true, mergeGreen: true, mergeBlue: true })))
         }
@@ -94,7 +92,7 @@ export function DetailsCard({ item, onCollapse, contentType }: IDetailsCard) {
             <Box pos="absolute" top={0} left={0} zIndex={5} w="100vw" h="100vh" onClick={onCollapse} cursor="pointer"
                 display="flex" flexDir="row" justifyContent="center" alignItems="center">
                 <Box w="100%" h="100%" maxW="1000px" maxH="652.5px" bgColor={backColor} cursor="default" borderRadius="24px" px={10} py={10} display="flex" flexDir="row"
-                    alignItems="flex-start" justifyContent="flex-start" columnGap={12} border={`1px solid ${backColor}`} transition="border .4s ease-in-out,background-color .4s ease-in-out" backdropFilter="blur(4px)" boxShadow="0 8px 32px 0 rgba( 31, 38, 135, 0.37 )"
+                    alignItems="flex-start" justifyContent="flex-start" columnGap={12} border={`1px solid ${backColor}`} transition="border .4s ease-in-out,background-color .4s ease-in-out" boxShadow="0 8px 32px 0 rgba( 31, 38, 135, 0.37 )"
                     pos="relative"
                     _before={{
                         content: "' '",
